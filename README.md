@@ -12,7 +12,7 @@ Then open a terminal window using a serial connection. Find Com port on windows 
 1) Open Device Manager. \
 2) Click on View in the menu bar and select Show hidden devices. \
 3) Locate Ports (COM & LPT) in the list. \
-4) Check for the com ports by expanding the same.\
+4) Check for the com ports by expanding the same. \
 Lauch Putty Session with Cisco Router:
 (image)
 #### 1. Upgrade to latest/recommended IOS
