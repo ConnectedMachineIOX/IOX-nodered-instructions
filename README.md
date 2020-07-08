@@ -1,8 +1,8 @@
 # node-red-on-iox-for-plc-s
-Prequesites:
--Cisco Router with IOS 
--USB to console port
--Windows Computer capable of running docker desktop 
+Prequesites:&nbsp;
+-Cisco Router with IOS&nbsp; 
+-USB to console port&nbsp;
+-Windows Computer capable of running docker desktop&nbsp; 
 ## 0. Configure and Install Local manager on Cisco Router 
 ### The router that we are going to use is the IR829 instructions for IOx on IR829
 #### 0. Creating a console connection for Router:
