@@ -5,7 +5,7 @@
 Download and Install Putty at : https://www.puttygen.com/download-putty
 Create a Console Connection between your Router and PC:
 
-#### 1.Upgrade to latest/recommended IOS
+#### 1. Upgrade to latest/recommended IOS
 -Copy .bin image to flash
 -Use 'bundle install flash:<filename>' exec command
 -updates 'boot system' command automatically
