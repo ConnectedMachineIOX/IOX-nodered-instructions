@@ -29,7 +29,7 @@ NOTE: When configuring the router for a new installation, it is best to erase an
     #reload
  After reload, router should boot to a generic IOS prompt (not rommon) with no configuration:
 #IR829
-### 2. IOS Configuration:
+#### 2. IOS Configuration:
 Overview:
     
            __________GE0(outside): 192.168.1.0/24
@@ -84,7 +84,7 @@ ip dhcp pool gospool
 IPV6:
 ipv6 dhcp pool v6gospool
   address prefix 2001:172:16:10::/64 lifetime infinite infinite
-### Configure Interface to Guest OS/Docker containers
+#### Configure Interface to Guest OS/Docker containers
 interface GigabitEthernet5
   ip address 172.16.10.1 255.255.255.0  
   ip virtual-reassembly in
@@ -96,7 +96,7 @@ interface GigabitEthernet5
   ipv6 enable
   ipv6 dhcp server v6gospool
   no shut
-### 3 Nat Configuration 
+#### 3 Nat Configuration 
 Configure default routes (not necessary when using DHCP):
 ip route 0.0.0.0 0.0.0.0 192.168.1.1    
 
@@ -124,7 +124,7 @@ ip nat inside source static tcp 172.16.10.6 8443 interface GigabitEthernet0 8443
 !
 ip access-list standard NAT_ACL
   permit 172.16.10.0 0.0.0.255
-### 4 Start/stop guest OS & Verify operation:
+#### 4 Start/stop guest OS & Verify operation:
 Stop Guest OS:
 #guest-os 1 stop
 Start Guest OS:
@@ -175,7 +175,7 @@ Services:
    Service Name:                 Host Device Management Service
    Service Status:               DISABLED
    Session ID:                   0
-## 5. Access IOx Local GUI interface 
+#### 5. Access IOx Local GUI interface 
 Determine outside IP address:
 IR800#sh ip int brief
 Interface                  IP-Address      OK? Method Status                Protocol
