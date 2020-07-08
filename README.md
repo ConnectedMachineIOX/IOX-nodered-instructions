@@ -8,8 +8,8 @@ Prequesites:
 #### 0. Creating a console connection for Router:
 Download and Install Putty at : https://www.puttygen.com/download-putty. Create a Console Connection between your Router and PC:
 (image)
-Then open a terminal window using a serial connection. Find Com port on windows by 
-1)Open Device Manager. \ 
+Then open a terminal window using a serial connection. Find Com port on windows by \
+1)Open Device Manager. \
 2)Click on View in the menu bar and select Show hidden devices. \
 3)Locate Ports (COM & LPT) in the list. \
 4)Check for the com ports by expanding the same.\
