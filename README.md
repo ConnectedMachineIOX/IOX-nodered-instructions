@@ -79,56 +79,52 @@ Example: Using GE1-4 switch ports:
  *! NOTE: IPv6 addressing required on int Gig 5 for guest OS to be enabled*
    - ipv6 address 2001:172:16:10::1/64
    - ipv6 enable
-    - ipv6 dhcp server v6gospool
+   - ipv6 dhcp server v6gospool
     no shut
 #### 3 Nat Configuration 
-Configure default routes (not necessary when using DHCP):
-ip route 0.0.0.0 0.0.0.0 192.168.1.1    
+*Configure default routes (not necessary when using DHCP):*
+   - ip route 0.0.0.0 0.0.0.0 192.168.1.1    
 
-NAT Configuration:
+*NAT Configuration:*
 Designate inside & outside interfaces:
-Inside:
--Gig 5 will always be 'inside interface' for NAT'ing to IOx
-interface GigabitEthernet5
-  ip nat inside
-  ip virtual-reassembly in
+Inside: Gig 5 will always be 'inside interface' for NAT'ing to IOx
+- interface GigabitEthernet5
+ - ip nat inside
+ - ip virtual-reassembly in
 
-Outside
--Outside interface can be Gig 0 or VLAN1 (or VLAN used on switchport interfaces)
+*Outside*
+Outside interface can be Gig 0 or VLAN1 (or VLAN used on switchport interfaces)
 interface GigabitEthernet0
-  ip nat outside
-  ip virtual-reassembly in
+ * ip nat outside
+ * ip virtual-reassembly in
 
--Example below uses port forwarding to direct any traffic for 2222 & 8443 to Guest OS
-
-Port forwarding example when Guest OS requires specific ports:
-ip nat inside source list NAT_ACL interface GigabitEthernet0 overload
-ip nat inside source static tcp 172.16.10.6 22 interface GigabitEthernet0 2222
-ip nat inside source static tcp 172.16.10.6 1880 interface GigabitEthernet0 1880
-ip nat inside source static tcp 172.16.10.6 8443 interface GigabitEthernet0 8443
-!
-ip access-list standard NAT_ACL
-  permit 172.16.10.0 0.0.0.255
+*Example below uses port forwarding to direct any traffic for 2222 & 8443 to Guest OS*
+* Port forwarding example when Guest OS requires specific ports:
+* ip nat inside source list NAT_ACL interface GigabitEthernet0 overload
+* ip nat inside source static tcp 172.16.10.6 22 interface GigabitEthernet0 2222
+* ip nat inside source static tcp 172.16.10.6 1880 interface GigabitEthernet0 1880
+* ip nat inside source static tcp 172.16.10.6 8443 interface GigabitEthernet0 8443
+* ip access-list standard NAT_ACL permit 172.16.10.0 0.0.0.255
 #### 4 Start/stop guest OS & Verify operation:
-Stop Guest OS:
-#guest-os 1 stop
-Start Guest OS:
-#guest-os 1 start
+*Stop Guest OS:*
+- #guest-os 1 stop
+
+*Start Guest OS:*
+- #guest-os 1 start
 
 Verify status & show guest OS details:
 Note: 
--It takes a couple minutes for the IOX guest OS container to initialize
--Once initialized, you will see console messages like this:
+- It takes a couple minutes for the IOX guest OS container to initialize
+- Once initialized, you will see console messages like this:
 IR800#
 Jun 29 17:34:45.089: %IOX-6-SOCK_CONNECT: Received socket connection request from IOX Client
 Jun 29 17:34:45.093: %IOX-6-SOCK_MESSAGE: Received IOX_REQUEST message with opcode IOX_REQUEST_REGISTER from IOX Client
 Jun 29 17:34:47.494: %IOX-6-SOCK_CONNECT: Received socket connection request from IOX Client
 
 After guest OS has initialized, you can confirm as follows:
-#sh iox host list detail
-
-IOX Server is running. Process ID: 332
-Count of hosts registered: 1
+- #sh iox host list detail
+	- IOX Server is running. Process ID: 332
+	- Count of hosts registered: 1
 
 Host registered:
 ===============
@@ -162,16 +158,16 @@ Services:
    Session ID:                   0
 #### 5. Access IOx Local GUI interface 
 Determine outside IP address:
-IR800#sh ip int brief
+- IR800#sh ip int brief:
+
 Interface                  IP-Address      OK? Method Status                Protocol
 GigabitEthernet0           192.168.1.197   YES DHCP   up                    up  
 
-Access to Local Manager GUI interface using outside address:
+*Access to Local Manager GUI interface using outside address:*
 https://192.168.1.197:8443/admin
 -login with level 15 credentials
 
-
-Direct access to GUI interface without NAT:
+*Direct access to GUI interface without NAT:*
 https://172.16.10.6:8443/admin
 -login with level 15 credentials
 
@@ -183,3 +179,4 @@ NOTE: Initial access to Local Manager GUI may fail if guest OS is still initiali
 ## 3. Build Package.tar file 
 ## 4. Deploy and start IOx Package
 ## 5. Verify and Troubleshoot the app running 
+
