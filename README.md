@@ -4,7 +4,7 @@
     - Cisco Router with IOS
     - Windows Computer capable of running docker desktop  
 ## 0. Configure and Install Local manager on Cisco Router 
-### The router that we are going to use is the IR829 instructions for IOx on IR829
+### Instruction were built using IR829 router   
 #### 0. Creating a console connection for Router:
 Download and Install Putty at : https://www.puttygen.com/download-putty. Create a Console Connection between your Router and PC:
 (image)
@@ -16,8 +16,8 @@ Then open a terminal window using a serial connection. Find Com port on windows 
 Lauch Putty Session with Cisco Router:
 (image)
 #### 1. Upgrade to latest/recommended IOS
-For IR839 download latest version of software at: https://software.cisco.com/download/home/286287074/type/280805680/release/15.9.3M1
-Then download 
+For IR839 download latest version of software at: https://software.cisco.com/download/home/286287074/type/280805680/release/15.9.3M1  &nbsp;
+Then download the driver: https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers  &nbsp;
 -Copy .bin image to flash
 -Use 'bundle install flash:<filename>' exec command
 -updates 'boot system' command automatically
