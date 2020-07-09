@@ -18,11 +18,11 @@ Lauch Putty Session with Cisco Router:
 #### 1. Upgrade to latest/recommended IOS
 For IR839 download latest version of software at: https://software.cisco.com/download/home/286287074/type/280805680/release/15.9.3M1  &nbsp;
 Then download the driver: https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers  &nbsp;
--Copy .bin image to flash
--Use 'bundle install flash:<filename>' exec command
--updates 'boot system' command automatically
--Hypervisor, BIOS & modem updates can take some time after reboot
--Multiple automatic reboots will occur as BIOS & Modem f/w is upgraded
+       -Copy .bin image to flash &nbsp;
+       -Use 'bundle install flash:<filename>' exec command &nbsp;
+       -Updates 'boot system' command automatically &nbsp;
+       -Hypervisor, BIOS & modem updates can take some time after reboot &nbsp;
+       -Multiple automatic reboots will occur as BIOS & Modem f/w is upgraded &nbsp;
 NOTE: When configuring the router for a new installation, it is best to erase any existing configuration AFTER completing the upgrade, then proceed to the configuration steps below.
 ##### Erase existing configuration:
     #write erase
