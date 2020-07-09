@@ -16,86 +16,71 @@ Then open a terminal window using a serial connection. Find Com port on windows 
 Lauch Putty Session with Cisco Router:
 (image)
 #### 1. Upgrade to latest/recommended IOS
-For IR839 download latest version of software at: https://software.cisco.com/download/home/286287074/type/280805680/release/15.9.3M1  &nbsp;
-Then download the driver: https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers  &nbsp;
-       -Copy .bin image to flash &nbsp;
-       -Use 'bundle install flash:<filename>' exec command &nbsp;
-       -Updates 'boot system' command automatically &nbsp;
-       -Hypervisor, BIOS & modem updates can take some time after reboot &nbsp;
-       -Multiple automatic reboots will occur as BIOS & Modem f/w is upgraded &nbsp;
+For IR839 download latest version of IOS at: https://software.cisco.com/download/home/286287074/type/280805680/release/15.9.3M1  &nbsp;
+Download the driver: https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers  &nbsp;
+- Copy .bin image to flash &nbsp;
+- Use 'bundle install flash:<filename>' exec command &nbsp;
+- Updates 'boot system' command automatically &nbsp;
+- Hypervisor, BIOS & modem updates can take some time after reboot &nbsp;
+- Multiple automatic reboots will occur as BIOS & Modem f/w is upgraded &nbsp;
 NOTE: When configuring the router for a new installation, it is best to erase any existing configuration AFTER completing the upgrade, then proceed to the configuration steps below.
 ##### Erase existing configuration:
-    #write erase
-    #reload
- After reload, router should boot to a generic IOS prompt (not rommon) with no configuration:
-#IR829
+- write erase
+- Reload (After reload, router should boot to a generic IOS prompt (not rommon) with no configuration:) The prompt should look like #IR829
 #### 2. IOS Configuration:
 Overview:
-    
-           __________GE0(outside): 192.168.1.0/24
-          |
-          |
-[ IR829: IOS | IOx ]
-                |
-                |_____Gig5: 172.16.10.0/24
-                            172.16.10.6 - IOx Host
-IR829> en   to go into enable mode
-#config t   to go into configure mode 
-Configure time:
-Configure for local time:
-clock timezone EST -5 0
-clock summer-time EDT recurring
+**IR829>** 
+- en   to go into enable mode
+- #config t   to go into configure mode 
+- Configure time:
+- Configure for local time:
+- clock timezone EST -5 0
+- clock summer-time EDT recurring
 
-Sync to NTP server:
-ntp server 216.239.35.0 
+- Sync to NTP server:
+- ntp server 216.239.35.0 
 
-Configure Interface to wired network:
-Example: Using WAN GE0 SFP Port:
-interface GigabitEthernet 0
-  ip address dhcp
-  no shut
+**Configure Interface to wired network:**
+*Example: Using WAN GE0 SFP Port:*
+- interface GigabitEthernet 0
+ - ip address dhcp
+ - no shut
 
 Example: Using GE1-4 switch ports:
-interface vlan 1
-  ip address dhcp
-  no shut
+ - interface vlan 1
+ - ip address dhcp
+ - no shut
+ 
+**Configure access via browser:**
+- username cisco privilege 15 password 0 cisco
+- ip http server
+    - ip http secure-server
+    - Enable IPV6:
+    - ipv6 unicast-routing
 
 
-Configure access via browser:
-username cisco privilege 15 password 0 cisco
+**Configure DHCP address pools for Guest OS:**
+*IPV4:*
+- ip dhcp excluded-address 172.16.10.1 172.16.10.5 !
+- ip dhcp pool gospool
+- network 172.16.10.0 255.255.255.0
+-  default-router 172.16.10.1 
+- dns-server 8.8.8.8 remember
 
-ip http server
-ip http secure-server
-
-Enable IPV6:
-ipv6 unicast-routing
-
-
-Configure DHCP address pools for Guest OS:
-IPV4:
-ip dhcp excluded-address 172.16.10.1 172.16.10.5
-!
-ip dhcp pool gospool
-  network 172.16.10.0 255.255.255.0
-  default-router 172.16.10.1 
-  dns-server 8.8.8.8
-  remember
-
-IPV6:
-ipv6 dhcp pool v6gospool
-  address prefix 2001:172:16:10::/64 lifetime infinite infinite
+*IPV6:*
+- ipv6 dhcp pool v6gospool
+- address prefix 2001:172:16:10::/64 lifetime infinite infinite
 #### Configure Interface to Guest OS/Docker containers
-interface GigabitEthernet5
-  ip address 172.16.10.1 255.255.255.0  
-  ip virtual-reassembly in
-  duplex auto
-  speed auto
-  !
-  ! NOTE: IPv6 addressing required on int Gig 5 for guest OS to be enabled
-  ipv6 address 2001:172:16:10::1/64
-  ipv6 enable
-  ipv6 dhcp server v6gospool
-  no shut
+- interface GigabitEthernet5
+ - ip address 172.16.10.1 255.255.255.0  
+ - ip virtual-reassembly in
+ - duplex auto
+ - speed auto
+ *! NOTE: IPv6 addressing required on int Gig 5 for guest OS to be enabled*
+   - ipv6 address 2001:172:16:10::1/64
+   - ipv6 enable
+    - ipv6 dhcp server v6gospool
+    no shut
 #### 3 Nat Configuration 
 Configure default routes (not necessary when using DHCP):
 ip route 0.0.0.0 0.0.0.0 192.168.1.1    
