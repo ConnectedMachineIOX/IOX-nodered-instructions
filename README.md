@@ -1,4 +1,4 @@
-# node-red-on-iox-for-plc-s
+# Node-red-on-iox-for-plc-s
 #### Prequesites
     - USB to console port
     - Cisco Router with IOS
@@ -6,125 +6,131 @@
 ## 0. Configure and Install Local manager on Cisco Router 
 ### Instruction were built using IR829 router   
 #### 0. Creating a console connection for Router:
-Download and Install Putty at : https://www.puttygen.com/download-putty. Create a Console Connection between your Router and PC:
-(image)
-Then open a terminal window using a serial connection. Find Com port on windows by &nbsp;
-1) Open Device Manager. &nbsp;
-2) Click on View in the menu bar and select Show hidden devices. &nbsp;
-3) Locate Ports (COM & LPT) in the list. &nbsp;
-4) Check for the com ports by expanding the same. &nbsp;
-Lauch Putty Session with Cisco Router:
-(image)
+Download and Install Putty at : https://www.puttygen.com/download-putty. create a console connection between your Router and PC:
 #### 1. Upgrade to latest/recommended IOS
 For IR839 download latest version of IOS at: https://software.cisco.com/download/home/286287074/type/280805680/release/15.9.3M1  &nbsp;
-Download the driver: https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers  &nbsp;
-- Copy .bin image to flash &nbsp;
-- Use 'bundle install flash:<filename>' exec command &nbsp;
-- Updates 'boot system' command automatically &nbsp;
-- Hypervisor, BIOS & modem updates can take some time after reboot &nbsp;
-- Multiple automatic reboots will occur as BIOS & Modem f/w is upgraded &nbsp;
+Download the driver:         https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers  &nbsp;
+
+     Copy .𝘣𝘪𝘯 image to flash &nbsp;
+     Use 𝘣𝘶𝘯𝘥𝘭𝘦 𝘪𝘯𝘴𝘵𝘢𝘭𝘭 𝘧𝘭𝘢𝘴𝘩:<𝘧𝘪𝘭𝘦𝘯𝘢𝘮𝘦> exec command &nbsp;
+     Updates '𝘣𝘰𝘰𝘵 𝘴𝘺𝘴𝘵𝘦𝘮' command automatically &nbsp;
+    
+Hypervisor, BIOS & modem updates can take some time after reboot &nbsp;
+Multiple automatic reboots will occur as BIOS & Modem f/w is upgraded &nbsp;
 NOTE: When configuring the router for a new installation, it is best to erase any existing configuration AFTER completing the upgrade, then proceed to the configuration steps below.
 ##### Erase existing configuration:
-- write erase
-- Reload (After reload, router should boot to a generic IOS prompt (not rommon) with no configuration:) The prompt should look like #IR829
+     write erase
+     Reload (After reload, router should boot to a generic IOS prompt. The prompt should look like
+     #IR829
 #### 2. IOS Configuration:
-Overview:
-**IR829>** 
-- en   to go into enable mode
-- #config t   to go into configure mode 
-- Configure time:
-- Configure for local time:
-- clock timezone EST -5 0
-- clock summer-time EDT recurring
+ Overview:
+**IR829>**
 
-- Sync to NTP server:
-- ntp server 216.239.35.0 
-
+     en to go into enable mode
+     #config t   to go into configure mode 
+     Configure time:
+     Configure for local time:
+     clock timezone EST -5 0
+     clock summer-time EDT recurring
+     Sync to NTP server:
+     ntp server 216.239.35.0 
 **Configure Interface to wired network:**
 *Example: Using WAN GE0 SFP Port:*
-- interface GigabitEthernet 0
- - ip address dhcp
- - no shut
+
+     interface GigabitEthernet 0
+     ip address dhcp
+     no shut
 
 Example: Using GE1-4 switch ports:
- - interface vlan 1
- - ip address dhcp
- - no shut
+
+     interface vlan 1
+     ip address dhcp
+     no shut
  
 **Configure access via browser:**
-- username cisco privilege 15 password 0 cisco
-- ip http server
-    - ip http secure-server
-    - Enable IPV6:
-    - ipv6 unicast-routing
+
+     username cisco privilege 15 password 0 cisco
+     ip http server
+     ip http secure-server
+     Enable IPV6:
+     ipv6 unicast-routing
 
 
 **Configure DHCP address pools for Guest OS:**
 *IPV4:*
-- ip dhcp excluded-address 172.16.10.1 172.16.10.5 !
-- ip dhcp pool gospool
-- network 172.16.10.0 255.255.255.0
--  default-router 172.16.10.1 
-- dns-server 8.8.8.8 remember
+
+     ip dhcp excluded-address 172.16.10.1 172.16.10.5 !
+     ip dhcp pool gospool
+     network 172.16.10.0 255.255.255.0
+     default-router 172.16.10.1 
+     dns-server 8.8.8.8 remember
 
 *IPV6:*
-- ipv6 dhcp pool v6gospool
-- address prefix 2001:172:16:10::/64 lifetime infinite infinite
+
+     ipv6 dhcp pool v6gospool
+     address prefix 2001:172:16:10::/64 lifetime infinite infinite
 #### Configure Interface to Guest OS/Docker containers
-- interface GigabitEthernet5
- - ip address 172.16.10.1 255.255.255.0  
- - ip virtual-reassembly in
- - duplex auto
- - speed auto
+
+     interface GigabitEthernet5
+     ip address 172.16.10.1 255.255.255.0  
+     ip virtual-reassembly in
+     duplex auto
+     speed auto
  *! NOTE: IPv6 addressing required on int Gig 5 for guest OS to be enabled*
-   - ipv6 address 2001:172:16:10::1/64
-   - ipv6 enable
-   - ipv6 dhcp server v6gospool
-    no shut
+ 
+     ipv6 address 2001:172:16:10::1/64
+     ipv6 enable
+     ipv6 dhcp server v6gospool
+     no shut
 #### 3 Nat Configuration 
 *Configure default routes (not necessary when using DHCP):*
-   - ip route 0.0.0.0 0.0.0.0 192.168.1.1    
-
+   
+     ip route 0.0.0.0 0.0.0.0 192.168.1.1    
 *NAT Configuration:*
 Designate inside & outside interfaces:
 Inside: Gig 5 will always be 'inside interface' for NAT'ing to IOx
-- interface GigabitEthernet5
- - ip nat inside
- - ip virtual-reassembly in
+
+     interface GigabitEthernet5
+     ip nat inside
+     ip virtual-reassembly in
 
 *Outside*
 Outside interface can be Gig 0 or VLAN1 (or VLAN used on switchport interfaces)
 interface GigabitEthernet0
- * ip nat outside
- * ip virtual-reassembly in
+    
+     ip nat outside
+     ip virtual-reassembly in
 
 *Example below uses port forwarding to direct any traffic for 2222 & 8443 to Guest OS*
-* Port forwarding example when Guest OS requires specific ports:
-* ip nat inside source list NAT_ACL interface GigabitEthernet0 overload
-* ip nat inside source static tcp 172.16.10.6 22 interface GigabitEthernet0 2222
-* ip nat inside source static tcp 172.16.10.6 1880 interface GigabitEthernet0 1880
-* ip nat inside source static tcp 172.16.10.6 8443 interface GigabitEthernet0 8443
-* ip access-list standard NAT_ACL permit 172.16.10.0 0.0.0.255
+
+     Port forwarding example when Guest OS requires specific ports:
+     ip nat inside source list NAT_ACL interface GigabitEthernet0 overload
+     ip nat inside source static tcp 172.16.10.6 22 interface GigabitEthernet0 2222
+     ip nat inside source static tcp 172.16.10.6 1880 interface GigabitEthernet0 1880
+     ip nat inside source static tcp 172.16.10.6 8443 interface GigabitEthernet0 8443
+     ip access-list standard NAT_ACL permit 172.16.10.0 0.0.0.255
 #### 4 Start/stop guest OS & Verify operation:
 *Stop Guest OS:*
-- #guest-os 1 stop
 
+     #guest-os 1 stop
 *Start Guest OS:*
-- #guest-os 1 start
 
+     #guest-os 1 start
 Verify status & show guest OS details:
-Note: 
-- It takes a couple minutes for the IOX guest OS container to initialize
-- Once initialized, you will see console messages like this:
-IR800#
+Note:
+
+**It takes a couple minutes for the IOX guest OS container to initialize**
+*Once initialized, you will see console messages like this:*
+IR800# :
 Jun 29 17:34:45.089: %IOX-6-SOCK_CONNECT: Received socket connection request from IOX Client
 Jun 29 17:34:45.093: %IOX-6-SOCK_MESSAGE: Received IOX_REQUEST message with opcode IOX_REQUEST_REGISTER from IOX Client
 Jun 29 17:34:47.494: %IOX-6-SOCK_CONNECT: Received socket connection request from IOX Client
 
 After guest OS has initialized, you can confirm as follows:
-- #sh iox host list detail
-	- IOX Server is running. Process ID: 332
-	- Count of hosts registered: 1
+    
+    - #sh iox host list detail
+	IOX Server is running. Process ID: 332
+	Count of hosts registered: 1
 
 Host registered:
 ===============
@@ -158,7 +164,7 @@ Services:
    Session ID:                   0
 #### 5. Access IOx Local GUI interface 
 Determine outside IP address:
-- IR800#sh ip int brief:
+ IR800#sh ip int brief:
 
 Interface                  IP-Address      OK? Method Status                Protocol
 GigabitEthernet0           192.168.1.197   YES DHCP   up                    up  
