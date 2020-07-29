@@ -1,12 +1,12 @@
-# Node-red-on-iox-for-plc-s
+## Node-red-on-iox-for-plc-s
 #### Prequesites
-    - USB to console port
-    - Cisco Router with IOS
-    - Windows Computer capable of running docker desktop  
+    USB to console port
+    Cisco Router with IOS
+    Windows Computer capable of running docker desktop  
 ## 0. Configure and Install Local manager on Cisco Router 
 ### Instruction were built using IR829 router   
 #### 0. Creating a console connection for Router:
-Download and Install Putty at : https://www.puttygen.com/download-putty. create a console connection between your Router and PC:
+Download and Install Putty at: https://www.puttygen.com/download-putty. create a console connection between your Router and PC:
 #### 1. Upgrade to latest/recommended IOS
 For IR839 download latest version of IOS at: https://software.cisco.com/download/home/286287074/type/280805680/release/15.9.3M1  &nbsp;
 Download the driver:         https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers  &nbsp;
@@ -23,7 +23,7 @@ NOTE: When configuring the router for a new installation, it is best to erase an
      Reload (After reload, router should boot to a generic IOS prompt. The prompt should look like
      #IR829
 #### 2. IOS Configuration:
- Overview:
+ **Overview:**
 **IR829>**
 
      en to go into enable mode
@@ -41,7 +41,7 @@ NOTE: When configuring the router for a new installation, it is best to erase an
      ip address dhcp
      no shut
 
-Example: Using GE1-4 switch ports:
+*Example: Using GE1-4 switch ports:*
 
      interface vlan 1
      ip address dhcp
@@ -57,7 +57,7 @@ Example: Using GE1-4 switch ports:
 
 
 **Configure DHCP address pools for Guest OS:**
-*IPV4:*
+**IPV4:**
 
      ip dhcp excluded-address 172.16.10.1 172.16.10.5 !
      ip dhcp pool gospool
@@ -65,7 +65,7 @@ Example: Using GE1-4 switch ports:
      default-router 172.16.10.1 
      dns-server 8.8.8.8 remember
 
-*IPV6:*
+**IPV6:**
 
      ipv6 dhcp pool v6gospool
      address prefix 2001:172:16:10::/64 lifetime infinite infinite
@@ -83,20 +83,20 @@ Example: Using GE1-4 switch ports:
      ipv6 dhcp server v6gospool
      no shut
 #### 3 Nat Configuration 
-*Configure default routes (not necessary when using DHCP):*
+**Configure default routes (not necessary when using DHCP):**
    
      ip route 0.0.0.0 0.0.0.0 192.168.1.1    
-*NAT Configuration:*
-Designate inside & outside interfaces:
-Inside: Gig 5 will always be 'inside interface' for NAT'ing to IOx
+**NAT Configuration:**
+*Designate inside & outside interfaces:*
+*Inside: Gig 5 will always be 'inside interface' for NAT'ing to IOx*
 
      interface GigabitEthernet5
      ip nat inside
      ip virtual-reassembly in
 
-*Outside*
-Outside interface can be Gig 0 or VLAN1 (or VLAN used on switchport interfaces)
-interface GigabitEthernet0
+**Outside**
+*Outside interface can be Gig 0 or VLAN1 (or VLAN used on switchport interfaces)*
+*interface GigabitEthernet0*
     
      ip nat outside
      ip virtual-reassembly in
@@ -122,9 +122,9 @@ Note:
 **It takes a couple minutes for the IOX guest OS container to initialize**
 *Once initialized, you will see console messages like this:*
 IR800# :
-Jun 29 17:34:45.089: %IOX-6-SOCK_CONNECT: Received socket connection request from IOX Client
-Jun 29 17:34:45.093: %IOX-6-SOCK_MESSAGE: Received IOX_REQUEST message with opcode IOX_REQUEST_REGISTER from IOX Client
-Jun 29 17:34:47.494: %IOX-6-SOCK_CONNECT: Received socket connection request from IOX Client
+- Jun 29 17:34:45.089: %IOX-6-SOCK_CONNECT: Received socket connection request from IOX Client
+- Jun 29 17:34:45.093: %IOX-6-SOCK_MESSAGE: Received IOX_REQUEST message with opcode IOX_REQUEST_REGISTER from IOX Client
+- Jun 29 17:34:47.494: %IOX-6-SOCK_CONNECT: Received socket connection request from IOX Client
 
 After guest OS has initialized, you can confirm as follows:
     
