@@ -185,4 +185,13 @@ NOTE: Initial access to Local Manager GUI may fail if guest OS is still initiali
 ## 3. Build Package.tar file 
 ## 4. Deploy and start IOx Package
 ## 5. Verify and Troubleshoot the app running 
+## References:
+Install IOx on 829:
+https://developer.cisco.com/docs/iox/#!platform-information/ir8xx-platforms
+
+How to Access the Console of Running Applications/Container:
+https://www.cisco.com/c/en/us/support/docs/routers/ic3000-industrial-compute-gateway/214479-how-to-access-the-console-of-running-app.html
+
+Node Slim(docker build based off of node slim):
+https://github.com/CiscoIOx/node-red-slim-for-iox
 
