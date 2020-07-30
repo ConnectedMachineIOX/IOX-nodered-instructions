@@ -1,28 +1,27 @@
-### Node-red-on-iox-for-plc-s
+## Node-red-on-iox-for-plc-s
  ## 0. Configure and Install Local manager on Cisco Router 
 ### Instruction were built using IR829 router   
 #### 1. Upgrade to latest/recommended IOS
 For IR829 download latest version of IOS at:<br/> https://software.cisco.com/download/home/286287074/type/280805680/release/15.9.3M1<br/>
-Download the driver:         https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers<br/>
+Download the driver:<br/>         https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers<br/><br/>
    Copy ```.bin``` image to flash<br/>
     Use ```bundle install flash:<filename>``` exec command<br/>
-     Updates ```boot system``` command automatically<br/>
-    
+     Updates ```boot system``` command automatically<br/><br/>
 Hypervisor, BIOS & modem updates can take some time after reboot<br/>
 Multiple automatic reboots will occur as BIOS & Modem f/w is upgraded<br/>
 NOTE: When configuring the router for a new installation, it is best to erase any existing configuration AFTER completing the upgrade, then proceed to the configuration steps below.
 ##### Erase existing configuration:
-```write erase```Reload (After reload, router should boot to a generic IOS prompt. The prompt should look like: #IR829
+```write erase``` and then reload (After reload, router should boot to a generic IOS prompt. The prompt should look like: #IR829
 #### 2. IOS Configuration:
- **Overview:**
+**Overview:**<br/>
 **IR829>**<br/>
     Configure time:<br/>
     Configure for local time:<br/>
     ```clock timezone EST -5 0```<br/>
-     ```clock summer-time EDT recurring``` <br/>  
+     ```clock summer-time EDT recurring``` 
   Sync to NTP server:<br/>
-     ```ntp server 216.239.35.0```<br/> 
-**Configure Interface to wired network:**
+     ```ntp server 216.239.35.0```
+**Configure Interface to wired network:**<br/> 
 *Example: Using WAN GE0 SFP Port:*<br/>
 ```interface GigabitEthernet 0```<br/>
 ```ip address dhcp```<br/>
@@ -49,7 +48,7 @@ NOTE: When configuring the router for a new installation, it is best to erase an
 ```address prefix 2001:172:16:10::/64 lifetime infinite infinite```<br/>
 #### Configure Interface to Guest OS/Docker containers<br/>
 ```interface GigabitEthernet5```<br/>
-```ip address 172.16.10.1 255.255.255.0```<br/>  
+```ip address 172.16.10.1 255.255.255.0```  
 ```ip virtual-reassembly in```<br/>
 ```duplex auto```<br/>
 ```speed auto```<br/>
@@ -71,7 +70,7 @@ NOTE: When configuring the router for a new installation, it is best to erase an
 *Outside interface can be Gig 0 or VLAN1 (or VLAN used on switchport interfaces)*<br/>
 *interface GigabitEthernet0*<br/>
 ```ip nat outside```<br/>
-```ip virtual-reassembly in```
+```ip virtual-reassembly in```<br/> 
 *Example below uses port forwarding to direct any traffic for 2222 & 8443 to Guest OS*
      Port forwarding example when Guest OS requires specific ports:
      ip nat inside source list NAT_ACL interface GigabitEthernet0 overload
@@ -131,7 +130,7 @@ Services:
    Session ID:                   0
 #### 5. Access IOx Local GUI interface 
 Determine outside IP address:
- IR800#sh ip int brief:
+ IR800 ```#sh ip int brief:```
 
 Interface                  IP-Address      OK? Method Status                Protocol
 GigabitEthernet0           192.168.1.197   YES DHCP   up                    up  
@@ -161,3 +160,5 @@ https://www.cisco.com/c/en/us/support/docs/routers/ic3000-industrial-compute-gat
 
 Node Slim(docker build based off of node slim):
 https://github.com/CiscoIOx/node-red-slim-for-iox
+
+
