@@ -48,7 +48,7 @@ NOTE: When configuring the router for a new installation, it is best to erase an
 ```address prefix 2001:172:16:10::/64 lifetime infinite infinite```<br/><br/>
 #### Configure Interface to Guest OS/Docker containers<br/><br/>
 ```interface GigabitEthernet5```<br/><br/>
-```ip address 172.16.10.1 255.255.255.0```  
+```ip address 172.16.10.1 255.255.255.0```  <br/><br/>
 ```ip virtual-reassembly in```<br/><br/>
 ```duplex auto```<br/><br/>
 ```speed auto```<br/><br/>
@@ -62,7 +62,7 @@ NOTE: When configuring the router for a new installation, it is best to erase an
 ```ip route 0.0.0.0 0.0.0.0 192.168.1.1```<br/>    <br/>
 **NAT Configuration:**<br/> <br/>
 *Designate inside & outside interfaces:*<br/><br/>
-*Inside: Gig 5 will always be 'inside interface' for NAT'ing to IOx*<br/>
+*Inside: Gig 5 will always be 'inside interface' for NAT'ing to IOx*<br/><br/>
 ```interface GigabitEthernet5```<br/><br/>
 ```ip nat inside```<br/><br/>
 ```ip virtual-reassembly in```<br/><br/>
@@ -71,7 +71,7 @@ NOTE: When configuring the router for a new installation, it is best to erase an
 *interface GigabitEthernet0*<br/><br/>
 ```ip nat outside```<br/><br/>
 ```ip virtual-reassembly in```<br/><br/> 
-*Example below uses port forwarding to direct any traffic for 2222 & 8443 to Guest OS*
+*Example below uses port forwarding to direct any traffic for 2222 & 8443 to Guest OS*<br/>
      Port forwarding example when Guest OS requires specific ports:
      ip nat inside source list NAT_ACL interface GigabitEthernet0 overload
      ip nat inside source static tcp 172.16.10.6 22 interface GigabitEthernet0 2222
