@@ -4,9 +4,9 @@
 #### 1. Upgrade to latest/recommended IOS
 For IR829 download latest version of IOS at:<br/> https://software.cisco.com/download/home/286287074/type/280805680/release/15.9.3M1<br/>
 Download the driver:<br/>         https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers<br/><br/>
-   Copy ```.bin``` image to flash<br/>
+    Copy ```.bin``` image to flash<br/>
     Use ```bundle install flash:<filename>``` exec command<br/>
-     Updates ```boot system``` command automatically<br/><br/>
+    Updates ```boot system``` command automatically<br/><br/>
 Hypervisor, BIOS & modem updates can take some time after reboot<br/>
 Multiple automatic reboots will occur as BIOS & Modem f/w is upgraded<br/>
 NOTE: When configuring the router for a new installation, it is best to erase any existing configuration AFTER completing the upgrade, then proceed to the configuration steps below.
@@ -18,9 +18,9 @@ NOTE: When configuring the router for a new installation, it is best to erase an
     Configure time:<br/>
     Configure for local time:<br/>
     ```clock timezone EST -5 0```<br/>
-     ```clock summer-time EDT recurring``` 
+     ```clock summer-time EDT recurring```<br/>
   Sync to NTP server:<br/>
-     ```ntp server 216.239.35.0```
+     ```ntp server 216.239.35.0```<br/><br/>
 **Configure Interface to wired network:**<br/> 
 *Example: Using WAN GE0 SFP Port:*<br/>
 ```interface GigabitEthernet 0```<br/>
@@ -29,7 +29,7 @@ NOTE: When configuring the router for a new installation, it is best to erase an
 *Example: Using GE1-4 switch ports:*<br/>
 ```interface vlan 1```<br/>
 ```ip address dhcp```<br/>
-```no shut```<br/>
+```no shut```<br/><br/>
 **Configure access via browser:**<br/>
 ```username cisco privilege 15 password 0 cisco```<br/>
 ```ip http server```<br/>
@@ -58,9 +58,9 @@ NOTE: When configuring the router for a new installation, it is best to erase an
 ```ipv6 dhcp server v6gospool```<br/>
 ```no shut```<br/>
 #### 3 Nat Configuration 
-**Configure default routes (not necessary when using DHCP):**
+**Configure default routes (not necessary when using DHCP):**<br/> 
 ```ip route 0.0.0.0 0.0.0.0 192.168.1.1```<br/>    
-**NAT Configuration:**
+**NAT Configuration:**<br/> 
 *Designate inside & outside interfaces:*<br/>
 *Inside: Gig 5 will always be 'inside interface' for NAT'ing to IOx*<br/>
 ```interface GigabitEthernet5```<br/>
@@ -70,7 +70,7 @@ NOTE: When configuring the router for a new installation, it is best to erase an
 *Outside interface can be Gig 0 or VLAN1 (or VLAN used on switchport interfaces)*<br/>
 *interface GigabitEthernet0*<br/>
 ```ip nat outside```<br/>
-```ip virtual-reassembly in```<br/> 
+```ip virtual-reassembly in```<br/><br/> 
 *Example below uses port forwarding to direct any traffic for 2222 & 8443 to Guest OS*
      Port forwarding example when Guest OS requires specific ports:
      ip nat inside source list NAT_ACL interface GigabitEthernet0 overload
@@ -80,9 +80,9 @@ NOTE: When configuring the router for a new installation, it is best to erase an
      ip access-list standard NAT_ACL permit 172.16.10.0 0.0.0.255
 #### 4 Start/stop guest OS & Verify operation:
 *Stop Guest OS:*<br/>
-```#guest-os 1 stop```
+```#guest-os 1 stop```<br/>
 *Start Guest OS:*<br/>
-```#guest-os 1 start```
+```#guest-os 1 start```<br/>
 Verify status & show guest OS details:
 Note:
 
@@ -160,5 +160,4 @@ https://www.cisco.com/c/en/us/support/docs/routers/ic3000-industrial-compute-gat
 
 Node Slim(docker build based off of node slim):
 https://github.com/CiscoIOx/node-red-slim-for-iox
-
 
