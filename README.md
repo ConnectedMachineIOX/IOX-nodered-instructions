@@ -1,10 +1,8 @@
 ## Node-red-on-iox-for-plc-s
  ## 0. Configure and Install Local manager on Cisco Router 
 ### Instruction were built using IR829 router   
-#### 0. Creating a console connection for Router:
-Download and Install Putty at: https://www.puttygen.com/download-putty. create a console connection between your Router and PC:
 #### 1. Upgrade to latest/recommended IOS
-For IR839 download latest version of IOS at: https://software.cisco.com/download/home/286287074/type/280805680/release/15.9.3M1  &nbsp;
+For IR829 download latest version of IOS at: https://software.cisco.com/download/home/286287074/type/280805680/release/15.9.3M1  &nbsp;
 Download the driver:         https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers  &nbsp;
 
      Copy .𝘣𝘪𝘯 image to flash &nbsp;
