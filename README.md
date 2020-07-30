@@ -1,6 +1,6 @@
 ## Node-red-on-iox-for-plc-s
  ## 0. Configure and Install Local manager on Cisco Router 
-### Instruction were built using IR829 router   
+### Verified with IOS 15.9(3)M1, 6/29/2020   
 #### 1. Upgrade to latest/recommended IOS
 For IR829 download latest version of IOS at:<br/> https://software.cisco.com/download/home/286287074/type/280805680/release/15.9.3M1<br/>
 Download the driver:<br/>         https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers<br/><br/>
