@@ -1,9 +1,5 @@
 ## Node-red-on-iox-for-plc-s
-#### Prequesites
-    USB to console port
-    Cisco Router with IOS
-    Windows Computer capable of running docker desktop  
-## 0. Configure and Install Local manager on Cisco Router 
+ ## 0. Configure and Install Local manager on Cisco Router 
 ### Instruction were built using IR829 router   
 #### 0. Creating a console connection for Router:
 Download and Install Putty at: https://www.puttygen.com/download-putty. create a console connection between your Router and PC:
