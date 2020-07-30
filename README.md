@@ -72,7 +72,7 @@ NOTE: When configuring the router for a new installation, it is best to erase an
 ```ip nat outside```<br/><br/>
 ```ip virtual-reassembly in```<br/><br/> 
 *Example below uses port forwarding to direct any traffic for 2222 & 8443 to Guest OS*<br/>
-     Port forwarding example when Guest OS requires specific ports:
+     Port forwarding example when Guest OS requires specific ports:<br/>
      ip nat inside source list NAT_ACL interface GigabitEthernet0 overload
      ip nat inside source static tcp 172.16.10.6 22 interface GigabitEthernet0 2222
      ip nat inside source static tcp 172.16.10.6 1880 interface GigabitEthernet0 1880
