@@ -2,74 +2,74 @@
  ## 0. Configure and Install Local manager on Cisco Router 
 ### Verified with IOS 15.9(3)M1, 6/29/2020   
 #### 1. Upgrade to latest/recommended IOS
-For IR829 download latest version of IOS at:<br/> https://software.cisco.com/download/home/286287074/type/280805680/release/15.9.3M1<br/>
+For IR829 download latest version of IOS at:<br/> https://software.cisco.com/download/home/286287074/type/280805680/release/15.9.3M1<br/><br/>
 Download the driver:<br/>         https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers<br/><br/>
-    Copy ```.bin``` image to flash<br/>
-    Use ```bundle install flash:<filename>``` exec command<br/>
+    Copy ```.bin``` image to flash<br/><br/>
+    Use ```bundle install flash:<filename>``` exec command<br/><br/>
     Updates ```boot system``` command automatically<br/><br/>
-Hypervisor, BIOS & modem updates can take some time after reboot<br/>
-Multiple automatic reboots will occur as BIOS & Modem f/w is upgraded<br/>
+Hypervisor, BIOS & modem updates can take some time after reboot<br/><br/>
+Multiple automatic reboots will occur as BIOS & Modem f/w is upgraded<br/><br/>
 NOTE: When configuring the router for a new installation, it is best to erase any existing configuration AFTER completing the upgrade, then proceed to the configuration steps below.
 ##### Erase existing configuration:
 ```write erase``` and then reload (After reload, router should boot to a generic IOS prompt. The prompt should look like: #IR829
 #### 2. IOS Configuration:
-**Overview:**<br/>
-**IR829>**<br/>
-    Configure time:<br/>
-    Configure for local time:<br/>
-    ```clock timezone EST -5 0```<br/>
-     ```clock summer-time EDT recurring```<br/>
-  Sync to NTP server:<br/>
+**Overview:**<br/><br/>
+**IR829>**<br/><br/>
+    Configure time:<br/><br/>
+    Configure for local time:<br/><br/>
+    ```clock timezone EST -5 0```<br/><br/>
+     ```clock summer-time EDT recurring```<br/><br/>
+  Sync to NTP server:<br/><br/>
      ```ntp server 216.239.35.0```<br/><br/>
-**Configure Interface to wired network:**<br/> 
-*Example: Using WAN GE0 SFP Port:*<br/>
-```interface GigabitEthernet 0```<br/>
-```ip address dhcp```<br/>
-```no shut```<br/>
-*Example: Using GE1-4 switch ports:*<br/>
-```interface vlan 1```<br/>
-```ip address dhcp```<br/>
+**Configure Interface to wired network:**<br/> <br/>
+*Example: Using WAN GE0 SFP Port:*<br/><br/>
+```interface GigabitEthernet 0```<br/><br/>
+```ip address dhcp```<br/><br/>
 ```no shut```<br/><br/>
-**Configure access via browser:**<br/>
-```username cisco privilege 15 password 0 cisco```<br/>
-```ip http server```<br/>
-```ip http secure-server```<br/>
-     Enable IPV6:<br/>
-```ipv6 unicast-routing```<br/>
-**Configure DHCP address pools for Guest OS:**<br/>
-**IPV4:**<br/>
-```ip dhcp excluded-address 172.16.10.1 172.16.10.5 !```<br/>
-```ip dhcp pool gospool```<br/>
-```network 172.16.10.0 255.255.255.0```<br/>
-```default-router 172.16.10.1 ```<br/>
-```dns-server 8.8.8.8 remember```<br/>
-**IPV6:**<br/>
-```ipv6 dhcp pool v6gospool```<br/>
-```address prefix 2001:172:16:10::/64 lifetime infinite infinite```<br/>
-#### Configure Interface to Guest OS/Docker containers<br/>
-```interface GigabitEthernet5```<br/>
+*Example: Using GE1-4 switch ports:*<br/><br/>
+```interface vlan 1```<br/><br/>
+```ip address dhcp```<br/><br/>
+```no shut```<br/><br/>
+**Configure access via browser:**<br/><br/>
+```username cisco privilege 15 password 0 cisco```<br/><br/>
+```ip http server```<br/><br/>
+```ip http secure-server```<br/><br/>
+     Enable IPV6:<br/><br/>
+```ipv6 unicast-routing```<br/><br/>
+**Configure DHCP address pools for Guest OS:**<br/><br/>
+**IPV4:**<br/><br/>
+```ip dhcp excluded-address 172.16.10.1 172.16.10.5 !```<br/><br/>
+```ip dhcp pool gospool```<br/><br/>
+```network 172.16.10.0 255.255.255.0```<br/><br/>
+```default-router 172.16.10.1 ```<br/><br/>
+```dns-server 8.8.8.8 remember```<br/><br/>
+**IPV6:**<br/><br/>
+```ipv6 dhcp pool v6gospool```<br/><br/>
+```address prefix 2001:172:16:10::/64 lifetime infinite infinite```<br/><br/>
+#### Configure Interface to Guest OS/Docker containers<br/><br/>
+```interface GigabitEthernet5```<br/><br/>
 ```ip address 172.16.10.1 255.255.255.0```  
-```ip virtual-reassembly in```<br/>
-```duplex auto```<br/>
-```speed auto```<br/>
- *! NOTE: IPv6 addressing required on int Gig 5 for guest OS to be enabled*<br/>
-```ipv6 address 2001:172:16:10::1/64```<br/>
-```ipv6 enable```<br/>
-```ipv6 dhcp server v6gospool```<br/>
-```no shut```<br/>
+```ip virtual-reassembly in```<br/><br/>
+```duplex auto```<br/><br/>
+```speed auto```<br/><br/>
+ *! NOTE: IPv6 addressing required on int Gig 5 for guest OS to be enabled*<br/><br/>
+```ipv6 address 2001:172:16:10::1/64```<br/><br/>
+```ipv6 enable```<br/><br/>
+```ipv6 dhcp server v6gospool```<br/><br/>
+```no shut```<br/><br/>
 #### 3 Nat Configuration 
-**Configure default routes (not necessary when using DHCP):**<br/> 
-```ip route 0.0.0.0 0.0.0.0 192.168.1.1```<br/>    
-**NAT Configuration:**<br/> 
-*Designate inside & outside interfaces:*<br/>
+**Configure default routes (not necessary when using DHCP):**<br/> <br/>
+```ip route 0.0.0.0 0.0.0.0 192.168.1.1```<br/>    <br/>
+**NAT Configuration:**<br/> <br/>
+*Designate inside & outside interfaces:*<br/><br/>
 *Inside: Gig 5 will always be 'inside interface' for NAT'ing to IOx*<br/>
-```interface GigabitEthernet5```<br/>
-```ip nat inside```<br/>
-```ip virtual-reassembly in```<br/>
+```interface GigabitEthernet5```<br/><br/>
+```ip nat inside```<br/><br/>
+```ip virtual-reassembly in```<br/><br/>
 **Outside**
-*Outside interface can be Gig 0 or VLAN1 (or VLAN used on switchport interfaces)*<br/>
-*interface GigabitEthernet0*<br/>
-```ip nat outside```<br/>
+*Outside interface can be Gig 0 or VLAN1 (or VLAN used on switchport interfaces)*<br/><br/>
+*interface GigabitEthernet0*<br/><br/>
+```ip nat outside```<br/><br/>
 ```ip virtual-reassembly in```<br/><br/> 
 *Example below uses port forwarding to direct any traffic for 2222 & 8443 to Guest OS*
      Port forwarding example when Guest OS requires specific ports:
@@ -79,10 +79,10 @@ NOTE: When configuring the router for a new installation, it is best to erase an
      ip nat inside source static tcp 172.16.10.6 8443 interface GigabitEthernet0 8443
      ip access-list standard NAT_ACL permit 172.16.10.0 0.0.0.255
 #### 4 Start/stop guest OS & Verify operation:
-*Stop Guest OS:*<br/>
-```#guest-os 1 stop```<br/>
-*Start Guest OS:*<br/>
-```#guest-os 1 start```<br/>
+*Stop Guest OS:*<br/><br/>
+```#guest-os 1 stop```<br/><br/>
+*Start Guest OS:*<br/><br/>
+```#guest-os 1 start```<br/><br/>
 Verify status & show guest OS details:
 Note:
 
@@ -93,10 +93,10 @@ IR800# :
 - Jun 29 17:34:45.093: %IOX-6-SOCK_MESSAGE: Received IOX_REQUEST message with opcode IOX_REQUEST_REGISTER from IOX Client
 - Jun 29 17:34:47.494: %IOX-6-SOCK_CONNECT: Received socket connection request from IOX Client
 
-After guest OS has initialized, you can confirm as follows:<br/>
-```#sh iox host list detail```<br/>
-IOX Server is running. Process ID: 332<br/>
-Count of hosts registered: 1<br/>
+After guest OS has initialized, you can confirm as follows:<br/><br/>
+```#sh iox host list detail```<br/><br/>
+IOX Server is running. Process ID: 332<br/><br/>
+Count of hosts registered: 1<br/><br/>
 
 Host registered:
 ===============
