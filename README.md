@@ -1,4 +1,4 @@
-## Node-red-on-iox-for-plc-s
+### Node-red-on-iox-for-plc-s
  ## 0. Configure and Install Local manager on Cisco Router 
 ### Instruction were built using IR829 router   
 #### 1. Upgrade to latest/recommended IOS
@@ -9,57 +9,51 @@ Download the driver:         https://www.silabs.com/products/development-tools/s
      Updates ```boot system``` command automatically<br/>
     
 Hypervisor, BIOS & modem updates can take some time after reboot<br/>
-Multiple automatic reboots will occur as BIOS & Modem f/w is<br/> upgraded<br/>
+Multiple automatic reboots will occur as BIOS & Modem f/w is upgraded<br/>
 NOTE: When configuring the router for a new installation, it is best to erase any existing configuration AFTER completing the upgrade, then proceed to the configuration steps below.
 ##### Erase existing configuration:
-```write erase```<br/>
-Reload (After reload, router should boot to a generic IOS prompt. The prompt should look like: #IR829
+```write erase```Reload (After reload, router should boot to a generic IOS prompt. The prompt should look like: #IR829
 #### 2. IOS Configuration:
  **Overview:**
-**IR829>**
+**IR829>**<br/>
     Configure time:<br/>
     Configure for local time:<br/>
     ```clock timezone EST -5 0```<br/>
      ```clock summer-time EDT recurring``` <br/>  
-  Sync to NTP server:
+  Sync to NTP server:<br/>
      ```ntp server 216.239.35.0```<br/> 
 **Configure Interface to wired network:**
 *Example: Using WAN GE0 SFP Port:*<br/>
 ```interface GigabitEthernet 0```<br/>
 ```ip address dhcp```<br/>
 ```no shut```<br/>
-*Example: Using GE1-4 switch ports:*
-
+*Example: Using GE1-4 switch ports:*<br/>
 ```interface vlan 1```<br/>
 ```ip address dhcp```<br/>
 ```no shut```<br/>
-**Configure access via browser:**
-
+**Configure access via browser:**<br/>
 ```username cisco privilege 15 password 0 cisco```<br/>
 ```ip http server```<br/>
 ```ip http secure-server```<br/>
      Enable IPV6:<br/>
-```ipv6 unicast-routing```
-**Configure DHCP address pools for Guest OS:**
-**IPV4:**
-
+```ipv6 unicast-routing```<br/>
+**Configure DHCP address pools for Guest OS:**<br/>
+**IPV4:**<br/>
 ```ip dhcp excluded-address 172.16.10.1 172.16.10.5 !```<br/>
 ```ip dhcp pool gospool```<br/>
 ```network 172.16.10.0 255.255.255.0```<br/>
 ```default-router 172.16.10.1 ```<br/>
 ```dns-server 8.8.8.8 remember```<br/>
-**IPV6:**
+**IPV6:**<br/>
 ```ipv6 dhcp pool v6gospool```<br/>
 ```address prefix 2001:172:16:10::/64 lifetime infinite infinite```<br/>
-#### Configure Interface to Guest OS/Docker containers
-
+#### Configure Interface to Guest OS/Docker containers<br/>
 ```interface GigabitEthernet5```<br/>
 ```ip address 172.16.10.1 255.255.255.0```<br/>  
 ```ip virtual-reassembly in```<br/>
 ```duplex auto```<br/>
 ```speed auto```<br/>
- *! NOTE: IPv6 addressing required on int Gig 5 for guest OS to be enabled*
- 
+ *! NOTE: IPv6 addressing required on int Gig 5 for guest OS to be enabled*<br/>
 ```ipv6 address 2001:172:16:10::1/64```<br/>
 ```ipv6 enable```<br/>
 ```ipv6 dhcp server v6gospool```<br/>
@@ -68,13 +62,13 @@ Reload (After reload, router should boot to a generic IOS prompt. The prompt sho
 **Configure default routes (not necessary when using DHCP):**
 ```ip route 0.0.0.0 0.0.0.0 192.168.1.1```<br/>    
 **NAT Configuration:**
-*Designate inside & outside interfaces:*
-*Inside: Gig 5 will always be 'inside interface' for NAT'ing to IOx*
+*Designate inside & outside interfaces:*<br/>
+*Inside: Gig 5 will always be 'inside interface' for NAT'ing to IOx*<br/>
 ```interface GigabitEthernet5```<br/>
 ```ip nat inside```<br/>
 ```ip virtual-reassembly in```<br/>
 **Outside**
-*Outside interface can be Gig 0 or VLAN1 (or VLAN used on switchport interfaces)*
+*Outside interface can be Gig 0 or VLAN1 (or VLAN used on switchport interfaces)*<br/>
 *interface GigabitEthernet0*<br/>
 ```ip nat outside```<br/>
 ```ip virtual-reassembly in```
@@ -100,11 +94,10 @@ IR800# :
 - Jun 29 17:34:45.093: %IOX-6-SOCK_MESSAGE: Received IOX_REQUEST message with opcode IOX_REQUEST_REGISTER from IOX Client
 - Jun 29 17:34:47.494: %IOX-6-SOCK_CONNECT: Received socket connection request from IOX Client
 
-After guest OS has initialized, you can confirm as follows:
-    
-```#sh iox host list detail```
-IOX Server is running. Process ID: 332
-Count of hosts registered: 1
+After guest OS has initialized, you can confirm as follows:<br/>
+```#sh iox host list detail```<br/>
+IOX Server is running. Process ID: 332<br/>
+Count of hosts registered: 1<br/>
 
 Host registered:
 ===============
@@ -160,3 +153,11 @@ NOTE: Initial access to Local Manager GUI may fail if guest OS is still initiali
 ## 4. Deploy and start IOx Package
 ## 5. Verify and Troubleshoot the app running 
 ## References:
+Install IOx on 829:
+https://developer.cisco.com/docs/iox/#!platform-information/ir8xx-platforms
+
+How to Access the Console of Running Applications/Container:
+https://www.cisco.com/c/en/us/support/docs/routers/ic3000-industrial-compute-gateway/214479-how-to-access-the-console-of-running-app.html
+
+Node Slim(docker build based off of node slim):
+https://github.com/CiscoIOx/node-red-slim-for-iox
