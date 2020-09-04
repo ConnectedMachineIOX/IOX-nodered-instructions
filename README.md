@@ -146,11 +146,40 @@ https://172.16.10.6:8443/admin
 NOTE: Initial access to Local Manager GUI may fail if guest OS is still initializing
 
 
-## 1. Build Node-Red Docker Image and create IOx application package
-## 2. Build Node-RED slim Docker image
-## 3. Build Package.tar file 
-## 4. Deploy and start IOx Package
-## 5. Verify and Troubleshoot the app running 
+## 1. Build Node-Red Docker Image and
+```git clone``` the repository 
+-If you want to play with the Node-RED without IOx specific nodes, you can now package the files using:
+ioxclient:
+```docker package node0:1.0```
+## 2. Build Package.tar file 
+-Put iox client in the same directory as your clonded repo and run: 
+```ioxclient docker package node0:1.0 .```
+## 3. Deploy and start IOx Package 
+-Go to local manager and at the url: https://172.16.10.6:8443/admin login with a username of cisco and a pasword of cisco.
+-Deploy the app using the name nodered and the package package.tar that you created:
+
+![image](https://user-images.githubusercontent.com/47573639/52669802-ec58eb80-2ecb-11e9-98ac-655385899b88.png)
+
+![image](https://user-images.githubusercontent.com/47573639/52669839-0692c980-2ecc-11e9-8e75-940cd17bec35.png)
+
+Activate the app with these configurations:
+- Choose `iox-nat0` for network and `1880:1880` for custom port mapping.
+- Choose `async1` and `async0` for device serial ports.
+- The recommended resource profile is:
+  - CPU: 200 cpu-units
+  - Memory: 128 MB
+  - Disk: 10 MB
+
+![image](https://user-images.githubusercontent.com/47573639/52669886-21653e00-2ecc-11e9-9a46-a0d7893ebd6c.png)
+
+![image](https://user-images.githubusercontent.com/47573639/52669905-33df7780-2ecc-11e9-9e87-2034a9c277c3.png)
+
+![image](https://user-images.githubusercontent.com/47573639/52669953-478ade00-2ecc-11e9-8b28-372632210bfc.png)
+
+Finally start the app.
+
+![image](https://user-images.githubusercontent.com/47573639/52670022-730dc880-2ecc-11e9-9e7d-596e5a8aed68.png) 
+  
 ## References:
 Install IOx on 829:
 https://developer.cisco.com/docs/iox/#!platform-information/ir8xx-platforms
